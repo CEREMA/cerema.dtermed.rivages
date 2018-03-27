@@ -1,0 +1,9 @@
+domaine {
+    - (key) Id
+    - (string) nomdomaine
+}
+
+formations {
+    - (key) IdFormation
+    - (domaine:*) keyDomaine
+}

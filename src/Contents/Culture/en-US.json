@@ -1,3 +1,5 @@
 {
-    "hello": "Hello World!"
+    "region": "Bonjour le monde !",
+    "PASSPORT_CERBERE": "Connect with CERBERE",
+    "PASSPORT_CEREMA": "Connect with CEREMA AD"
 }
