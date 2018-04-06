@@ -1,44 +1,3 @@
-var TMap = {};
-
-function GMap(l, m) {
-    TMap.map = new google.maps.Map(document.getElementById('TMapPanel'), {
-        zoom: 10,
-        center: { lat: -28, lng: 137 },
-        mapTypeId: 'satellite'
-    });
-    google.maps.event.trigger(TMap.map, 'resize');
-    TMap.markers = [];
-    TMap.setMarker = function(l, m, title, id) {
-        var marker = new google.maps.Marker({
-            position: new google.maps.LatLng(l, m),
-            animation: google.maps.Animation.DROP,
-            title: title,
-            itemId: id
-        });
-        marker.setMap(TMap.map);
-        marker.addListener('click', function(x) {
-            var dir = this.itemId.split('|')[1] + '/rivages_' + this.itemId.split('|')[2];
-            var d = new Date();
-            dir = d.getTime() + "/" + dir;
-            var infowindow = new google.maps.InfoWindow({
-                content: [
-                    '<div width="100%" align=center><img src="/thumbs/' + dir + '"></img></div>',
-                    '<div><small>rivages_' + this.itemId.split('|')[2] + '</small></div>'
-                ].join('')
-            });
-            infowindow.open(TMap.map, this);
-        });
-        TMap.markers.push(marker);
-        return marker;
-    };
-    TMap.clearMarkers = function() {
-        for (var i = 0; i < TMap.markers.length; i++) {
-            TMap.markers[i].setMap(null);
-        }
-    };
-
-};
-
 App.view.define('VMain', {
 
     extend: 'Ext.Panel',
@@ -77,7 +36,7 @@ App.view.define('VMain', {
                                 iconCls: "export",
                                 menu: [{
                                         text: "Photos",
-                                        handler: function(me) {
+                                        handler: function (me) {
                                             var grid = me.up('grid');
                                             var s = grid.getSelectionModel().getSelection();
                                             var OGRFID = [];
@@ -90,7 +49,7 @@ App.view.define('VMain', {
                                     },
                                     {
                                         text: "Points",
-                                        handler: function(me) {
+                                        handler: function (me) {
                                             var grid = me.up('grid');
                                             var s = grid.getSelectionModel().getSelection();
                                             var OGRFID = [];
@@ -103,7 +62,7 @@ App.view.define('VMain', {
                                     },
                                     {
                                         text: "Segments",
-                                        handler: function(me) {
+                                        handler: function (me) {
                                             var grid = me.up('grid');
                                             var s = grid.getSelectionModel().getSelection();
                                             var OGRFID = [];
@@ -119,7 +78,7 @@ App.view.define('VMain', {
                             {
                                 text: "Actualiser",
                                 iconCls: "refresh",
-                                handler: function(me) {
+                                handler: function (me) {
                                     me.up('grid').getStore().load();
                                 }
                             }
@@ -140,6 +99,10 @@ App.view.define('VMain', {
                                 flex: 1
                             },
                             {
+                                text: "Utilisateur",
+                                dataIndex: "user"
+                            },
+                            {
                                 text: "Ville",
                                 dataIndex: "locality"
                             },
@@ -156,7 +119,7 @@ App.view.define('VMain', {
                                 dataIndex: "country"
                             }
                         ],
-                        store: App.store.create("rivages://import_segments{tkid,OGR_FID,annee+'-'+mois+'-'+jour+' '+heure=date-,annee-,mois-,jour-,heure-,code_li,country,area,region,locality}?status=1", {
+                        store: App.store.create("rivages://import_segments{tkid,user,OGR_FID,annee+'-'+mois+'-'+jour+' '+heure=date-,annee-,mois-,jour-,heure-,code_li,country,area,region,locality}?status=1", {
                             autoLoad: true
                         })
                     }, {
