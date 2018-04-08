@@ -1,3 +1,47 @@
+TMap = {};
+
+function GMap(l, m) {
+    TMap.map = new google.maps.Map(document.getElementById('TMapPanel'), {
+        zoom: 10,
+        center: {
+            lat: -28,
+            lng: 137
+        },
+        mapTypeId: 'satellite'
+    });
+    google.maps.event.trigger(TMap.map, 'resize');
+    TMap.markers = [];
+    TMap.setMarker = function (l, m, title, id) {
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(l, m),
+            animation: google.maps.Animation.DROP,
+            title: title,
+            itemId: id
+        });
+        marker.setMap(TMap.map);
+        marker.addListener('click', function (x) {
+            var dir = this.itemId.split('|')[1] + '/rivages_' + this.itemId.split('|')[2];
+            var d = new Date();
+            dir = d.getTime() + "/" + dir;
+            var infowindow = new google.maps.InfoWindow({
+                content: [
+                    '<div width="100%" align=center><img src="/thumbs/' + dir + '"></img></div>',
+                    '<div><small>rivages_' + this.itemId.split('|')[2] + '</small></div>'
+                ].join('')
+            });
+            infowindow.open(TMap.map, this);
+        });
+        TMap.markers.push(marker);
+        return marker;
+    };
+    TMap.clearMarkers = function () {
+        for (var i = 0; i < TMap.markers.length; i++) {
+            TMap.markers[i].setMap(null);
+        }
+    };
+
+};
+
 App.controller.define('CMain', {
 
     views: [
@@ -8,49 +52,7 @@ App.controller.define('CMain', {
     models: [],
 
     init: function () {
-        TMap = {};
 
-        function GMap(l, m) {
-            TMap.map = new google.maps.Map(document.getElementById('TMapPanel'), {
-                zoom: 10,
-                center: {
-                    lat: -28,
-                    lng: 137
-                },
-                mapTypeId: 'satellite'
-            });
-            google.maps.event.trigger(TMap.map, 'resize');
-            TMap.markers = [];
-            TMap.setMarker = function (l, m, title, id) {
-                var marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(l, m),
-                    animation: google.maps.Animation.DROP,
-                    title: title,
-                    itemId: id
-                });
-                marker.setMap(TMap.map);
-                marker.addListener('click', function (x) {
-                    var dir = this.itemId.split('|')[1] + '/rivages_' + this.itemId.split('|')[2];
-                    var d = new Date();
-                    dir = d.getTime() + "/" + dir;
-                    var infowindow = new google.maps.InfoWindow({
-                        content: [
-                            '<div width="100%" align=center><img src="/thumbs/' + dir + '"></img></div>',
-                            '<div><small>rivages_' + this.itemId.split('|')[2] + '</small></div>'
-                        ].join('')
-                    });
-                    infowindow.open(TMap.map, this);
-                });
-                TMap.markers.push(marker);
-                return marker;
-            };
-            TMap.clearMarkers = function () {
-                for (var i = 0; i < TMap.markers.length; i++) {
-                    TMap.markers[i].setMap(null);
-                }
-            };
-
-        };
         this.control({
             "menu>menuitem": {
                 click: "Menu_onClick"
