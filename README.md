@@ -5,7 +5,7 @@ Copyright (c) 2018 CEREMA/DTerMed
 ## History
 First commit
 ## Credits
-Author: [XXX](mailto:xxx@xxx.com)
+Author: [Stéphane Zucatti](mailto:stephane.zucatti@cerema.fr)
 ## License
 Copyright (c) 2018, CEREMA/DTerMed
 
